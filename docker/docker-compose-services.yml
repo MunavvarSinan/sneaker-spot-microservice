@@ -1,0 +1,26 @@
+version: '1.0'
+services:
+  auth-service:
+    build:
+      context: ../services/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    command: pnpm watch
+    depends_on:
+      - auth-database
+      # - rabbitmq
+    ports:
+      - "8091:8091"
+    develop:
+      watch:
+        - action: rebuild
+          path: ../services/auth-service/package.json
+        - action: rebuild
+          path: ../services/auth-service/prisma/schema.prisma
+        - action: sync
+          path: ../services/auth-service/src
+          target: /auth/src
+    env_file:
+      - ../services/auth-service/.env
+    networks:
+      - ecommerce

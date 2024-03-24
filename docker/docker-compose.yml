@@ -1,0 +1,16 @@
+version: '1'
+services:
+  #databases
+  auth-database:
+    extends:
+      file: docker-compose-db.yml
+      service: auth-db
+  
+  #services
+  auth:
+    extends:
+      file: docker-compose-services.yml
+      service: auth-service
+  
+networks:
+  ecommerce:
