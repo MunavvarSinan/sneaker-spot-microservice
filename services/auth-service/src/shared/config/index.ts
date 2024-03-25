@@ -14,4 +14,10 @@ export default {
         accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
         refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || ''
     },
+    GMAIL_USER: process.env.GMAIL_USER || '',
+    GMAIL_PASSWORD: process.env.GMAIL_PASSWORD || '',
+    email: {
+        from: process.env.EMAIL_FROM || ''
+    },
+    server_url: process.env.SERVER_URL || 'http://localhost:8091'
 }

@@ -10,10 +10,12 @@ import { ApiError, InternalError, NotFoundError } from "@application/core/api/ap
 import config from "@shared/config";
 
 import rateLimiter from "@middleware/rate-limiter";
+import { container } from "tsyringe";
+import { AuthController } from "@presentation/controller/auth.controller";
+import { EmailController } from "@presentation/controller/email.controller";
 
 export class Server {
     private app: Application;
-
     constructor() {
         this.app = express();
     }
@@ -33,8 +35,9 @@ export class Server {
         }
     }
 
-    private setupRoutes(): void {
-        // this.app.use("/api", container.resolve(UserController).routes());
+    private setupRoutes() {
+        this.app.use("/api", container.resolve(AuthController).routes());
+        this.app.use("/api/email", container.resolve(EmailController).routes());
     }
 
     private handleErrors(): void {
