@@ -10,23 +10,6 @@ class Auth {
     ) { }
 }
 
-class Account {
-    constructor(
-        public readonly id: string,
-        public readonly userId: string,
-        public readonly type: string,
-        public readonly provider: string,
-        public readonly providerAccountId: string,
-        public readonly expiresAt: Date,
-        public readonly user: User,
-        public readonly refresh_token?: string,
-        public readonly access_token?: string,
-        public readonly token_type?: string,
-        public readonly scope?: string,
-        public readonly id_token?: string,
-        public readonly session_state?: string,
-    ) { }
-}
 
 class User {
     constructor(
@@ -37,7 +20,6 @@ class User {
         public readonly emailVerified: Date | null,
         public readonly createdAt: Date,
         public readonly role: Role,
-        public readonly accounts: Account[],
         public readonly refreshTokens: RefreshToken[],
         public readonly resetTokens: ResetToken[],
         public readonly emailVerificationTokens: EmailVerificationToken[]
@@ -73,4 +55,4 @@ class EmailVerificationToken {
     ) { }
 }
 
-export { Auth, User, Account, RefreshToken, ResetToken, EmailVerificationToken };
+export { Auth, User, RefreshToken, ResetToken, EmailVerificationToken };
