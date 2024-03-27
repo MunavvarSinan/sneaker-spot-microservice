@@ -6,7 +6,7 @@ import {
     NotFoundResponse,
     BadRequestResponse,
     ForbiddenResponse,
-    RabbitMqConnectionErrorResponse,
+    SecurityErrorResponse,
 } from './api-response';
 import config from '@shared/config';
 
@@ -22,7 +22,8 @@ enum ErrorType {
     BAD_REQUEST = 'BadRequestError',
     FORBIDDEN = 'ForbiddenError',
     UserAlreadyExistsError = 'UserAlreadyExistsError',
-    RabbitMqConnectionError = 'RabitMqConnectionError'
+    RabbitMqConnectionError = 'RabitMqConnectionError',
+    SecurityError = 'SecurityError'
 }
 
 export abstract class ApiError extends Error {
@@ -49,8 +50,8 @@ export abstract class ApiError extends Error {
                 return new BadRequestResponse(err.message).send(res);
             case ErrorType.FORBIDDEN:
                 return new ForbiddenResponse(err.message).send(res);
-            case ErrorType.RabbitMqConnectionError:
-                return new RabbitMqConnectionErrorResponse(err.message).send(res);
+            case ErrorType.SecurityError:
+                return new SecurityErrorResponse(err.message).send(res);
             default: {
                 let message = err.message;
                 // Do not send failure message in production as it may send sensitive data
@@ -124,5 +125,11 @@ export class AccessTokenError extends ApiError {
 export class RabitMqConnectionError extends ApiError {
     constructor(message = 'RabbitMQ connection error') {
         super(ErrorType.INTERNAL, message);
+    }
+}
+
+export class SecurityError extends ApiError {
+    constructor(message = 'Security error') {
+        super(ErrorType.SecurityError, message);
     }
 }

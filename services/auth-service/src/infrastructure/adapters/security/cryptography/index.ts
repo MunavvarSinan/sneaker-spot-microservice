@@ -1,22 +1,21 @@
-import { CreatePasswordHash } from '@infrastructure/adapters/security/cryptography/createpassword-hash';
 import { OTP } from './otp';
-// import { CreatePasswordHash } from './createpassword-hash';
+import { CreatePasswordHash } from './createpassword-hash';
+import { ComparePassword } from './compare-password';
 
 export class CryptographyAdapter {
-    private createPasswordHash: typeof CreatePasswordHash;
-    private createOtp: typeof OTP;
 
-    constructor() {
-        this.createPasswordHash = CreatePasswordHash;
-        this.createOtp = OTP;
-    }
+    constructor() { }
+
     async hashPassword(password: string): Promise<string> {
-        return this.createPasswordHash.hash(password);
+        return CreatePasswordHash.hash(password);
+    }
+    async verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+        return ComparePassword.compare(password, hashedPassword);
     }
     async generateOtp(): Promise<string> {
-        return this.createOtp.create();
+        return OTP.create();
     }
     async verifyOtp(otp: string): Promise<boolean> {
-        return this.createOtp.verify(otp);
+        return OTP.verify(otp);
     }
 }

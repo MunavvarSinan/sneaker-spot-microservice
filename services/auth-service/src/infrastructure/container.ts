@@ -6,6 +6,7 @@ import { AuthService } from '@application/services/auth.service'
 import { CreateUserUseCase } from '@application/useCases/createUser'
 import { CryptographyAdapter } from './adapters/security/cryptography'
 import { EmailController } from '@presentation/controller/email.controller'
+import { UseCases } from '@application/useCases'
 
 container.register(AuthService, {
     useClass: AuthService
@@ -30,4 +31,8 @@ container.register(CryptographyAdapter, {
 
 container.register(EmailController, {
     useClass: EmailController
+})
+
+container.register(UseCases, {
+    useClass: UseCases
 })

@@ -16,7 +16,7 @@ export class SignupRequest {
 
     @IsString()
     role: string;
-    
+
     constructor(name: string, email: string, password: string) {
         this.name = name;
         this.email = email;
@@ -25,6 +25,20 @@ export class SignupRequest {
     }
 }
 
+export class LoginRequest {
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+
+    constructor(email: string, password: string) {
+        this.email = email;
+        this.password = password;
+    }
+}
 export class VerifyEmailRequest {
     @IsString()
     @IsNotEmpty()

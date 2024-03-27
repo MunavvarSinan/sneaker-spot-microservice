@@ -1,11 +1,14 @@
+import { SignupResponse } from '@shared/types/requests';
 import { Response } from 'express';
 
-// Helper code for the API consumer to understand the error and handle it accordingly
 enum StatusCode {
   SUCCESS = '10000',
   FAILURE = '10001',
   RETRY = '10002',
   INVALID_ACCESS_TOKEN = '10003',
+  SIGNUP_SUCCESS = '10004',
+  LOGIN_SUCCESS = '10005',
+  SECURITY_ERROR = '20000',
 }
 
 enum ResponseStatus {
@@ -93,14 +96,20 @@ export class FailureMsgResponse extends ApiResponse {
 }
 
 export class SuccessResponse<T> extends ApiResponse {
-  constructor(message: string, private data: T) {
-    super(StatusCode.SUCCESS, ResponseStatus.SUCCESS, message);
+  constructor(
+    message: string,
+    private data: T,
+    statusCode?: StatusCode,
+    status?: ResponseStatus,
+  ) {
+    super(statusCode || StatusCode.SUCCESS, status || ResponseStatus.SUCCESS, message);
   }
 
   send(res: Response): Response {
     return super.prepare<SuccessResponse<T>>(res, this);
   }
 }
+
 
 export class AccessTokenErrorResponse extends ApiResponse {
   private instruction = 'refresh_token';
@@ -125,8 +134,20 @@ export class TokenRefreshResponse extends ApiResponse {
   }
 }
 
-export class RabbitMqConnectionErrorResponse extends ApiResponse {
-  constructor(message = 'RabbitMQ Connection Error') {
-    super(StatusCode.FAILURE, ResponseStatus.INTERNAL_ERROR, message);
+export class SignupSuccessResponse extends SuccessResponse<SignupResponse> {
+  constructor(message: string, data: SignupResponse) {
+    super(message, data);
+    this.statusCode = StatusCode.SIGNUP_SUCCESS; // Set specific status code for signup success
+    this.status = ResponseStatus.SUCCESS;
   }
 }
+
+
+// Errors
+export class SecurityErrorResponse extends ApiResponse {
+  constructor(message = 'Security Error') {
+    super(StatusCode.SECURITY_ERROR, ResponseStatus.INTERNAL_ERROR, message);
+  }
+}
+
+
