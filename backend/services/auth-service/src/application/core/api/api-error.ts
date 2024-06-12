@@ -23,7 +23,8 @@ enum ErrorType {
     FORBIDDEN = 'ForbiddenError',
     UserAlreadyExistsError = 'UserAlreadyExistsError',
     RabbitMqConnectionError = 'RabitMqConnectionError',
-    SecurityError = 'SecurityError'
+    SecurityError = 'SecurityError',
+    TokenError = 'TokenError'
 }
 
 export abstract class ApiError extends Error {
@@ -35,6 +36,7 @@ export abstract class ApiError extends Error {
         switch (err.type) {
             case ErrorType.BAD_TOKEN:
             case ErrorType.TOKEN_EXPIRED:
+            case ErrorType.TokenError:
             case ErrorType.UNAUTHORIZED:
                 return new AuthFailureResponse(err.message).send(res);
             case ErrorType.ACCESS_TOKEN:
@@ -131,5 +133,11 @@ export class RabitMqConnectionError extends ApiError {
 export class SecurityError extends ApiError {
     constructor(message = 'Security error') {
         super(ErrorType.SecurityError, message);
+    }
+}
+
+export class TokenError extends ApiError {
+    constructor(message = 'Token error') {
+        super(ErrorType.INTERNAL, message);
     }
 }

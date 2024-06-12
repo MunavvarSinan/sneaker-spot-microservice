@@ -143,6 +143,7 @@ export class SignupSuccessResponse extends SuccessResponse<SignupResponse> {
 }
 
 
+
 // Errors
 export class SecurityErrorResponse extends ApiResponse {
   constructor(message = 'Security Error') {

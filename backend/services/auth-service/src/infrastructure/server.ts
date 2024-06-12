@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import compression from "compression";
+import cookieParser from 'cookie-parser'
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
@@ -11,8 +12,6 @@ import config from "@shared/config";
 
 import rateLimiter from "@middleware/rate-limiter";
 import { container } from "tsyringe";
-import { AuthController } from "@presentation/controller/auth.controller";
-import { EmailController } from "@presentation/controller/email.controller";
 
 export class Server {
     private app: Application;
@@ -22,10 +21,11 @@ export class Server {
 
     private configureServer(): void {
         this.app.use(morgan("dev"));
-        this.app.use(cors());
+        this.app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
         this.app.use(express.json());
         this.app.use(compression({ filter: compressFilter }));
         this.app.use(helmet());
+        this.app.use(cookieParser());
     }
 
     private setupMiddleware(): void {
@@ -35,14 +35,9 @@ export class Server {
         }
     }
 
-    private setupRoutes() {
-        this.app.use("/api", container.resolve(AuthController).routes());
-        this.app.use("/api/email", container.resolve(EmailController).routes());
-    }
 
     private handleErrors(): void {
         this.app.use((req, res, next) => next(new NotFoundError()));
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             console.log("error--------------", err);
@@ -70,9 +65,7 @@ export class Server {
     public async initializeServer(): Promise<void> {
         this.configureServer();
         this.setupMiddleware();
-        this.setupRoutes();
         this.handleErrors();
-
         this.startListening();
     }
 }
