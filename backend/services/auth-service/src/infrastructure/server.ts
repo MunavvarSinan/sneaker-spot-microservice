@@ -12,6 +12,8 @@ import config from "@shared/config";
 
 import rateLimiter from "@middleware/rate-limiter";
 import { container } from "tsyringe";
+import { AuthController } from "@presentation/controller/auth.controller";
+import { EmailController } from "@presentation/controller/email.controller";
 
 export class Server {
     private app: Application;
@@ -35,6 +37,10 @@ export class Server {
         }
     }
 
+    private setupRoutes() {
+        this.app.use("/api", container.resolve(AuthController).routes());
+        this.app.use("/api/email", container.resolve(EmailController).routes());
+    }
 
     private handleErrors(): void {
         this.app.use((req, res, next) => next(new NotFoundError()));
@@ -65,6 +71,7 @@ export class Server {
     public async initializeServer(): Promise<void> {
         this.configureServer();
         this.setupMiddleware();
+        this.setupRoutes();
         this.handleErrors();
         this.startListening();
     }
