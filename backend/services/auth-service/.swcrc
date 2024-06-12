@@ -1,0 +1,36 @@
+{
+    "env": {
+        "target": {
+            "node": 20
+        }
+    },
+    "jsc": {
+        "parser": {
+            "syntax": "typescript",
+            "decorators": true
+        },
+        "baseUrl": ".",
+        "paths": {
+            "@application/*": [
+                "src/application/*"
+            ],
+            "@domain/*": [
+                "src/domain/*"
+            ],
+            "@infrastructure/*": [
+                "src/infrastructure/*"
+            ],
+
+            "@shared/*": [
+                "src/shared/*"
+            ],
+            "@middleware/*" : [
+                "src/middleware/*"
+            ]
+        }
+    },
+    "module": {
+        "type": "commonjs"
+    },
+    "sourceMaps": "inline"
+}
