@@ -5,12 +5,17 @@ services:
     extends:
       file: docker-compose-db.yml
       service: auth-db
-  
+    networks:
+      - ecommerce
+
   #services
   auth:
     extends:
       file: docker-compose-services.yml
       service: auth-service
+    networks:
+      - ecommerce
   
 networks:
   ecommerce:
+    driver: bridge

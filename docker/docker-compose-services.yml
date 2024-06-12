@@ -2,7 +2,7 @@ version: '1.0'
 services:
   auth-service:
     build:
-      context: ../services/auth-service
+      context: ../backend/services/auth-service
       dockerfile: Dockerfile
     container_name: auth-service
     command: pnpm watch
@@ -11,16 +11,17 @@ services:
       # - rabbitmq
     ports:
       - "8091:8091"
+      - "5555:5555"
     develop:
       watch:
         - action: rebuild
-          path: ../services/auth-service/package.json
+          path: ../backend/services/auth-service/package.json
         - action: rebuild
-          path: ../services/auth-service/prisma/schema.prisma
+          path: ../backend/services/auth-service/prisma/schema.prisma
         - action: sync
-          path: ../services/auth-service/src
+          path: ../backend/services/auth-service/src
           target: /auth/src
     env_file:
-      - ../services/auth-service/.env
+      - ../backend/services/auth-service/.env
     networks:
       - ecommerce
