@@ -11,7 +11,6 @@ services:
       # - rabbitmq
     ports:
       - "8091:8091"
-      - "5555:5555"
     develop:
       watch:
         - action: rebuild
@@ -23,5 +22,53 @@ services:
           target: /auth/src
     env_file:
       - ../backend/services/auth-service/.env
+    networks:
+      - ecommerce
+  
+  product-service:
+    build:
+      context: ../backend/services/catalog-service
+      dockerfile: Dockerfile
+    container_name: catalog-service
+    command: pnpm watch
+    depends_on:
+      - product-database
+    ports:
+      - "4000:4000"
+    develop:
+      watch:
+        - action: rebuild
+          path: ../backend/services/catalog-service/package.json
+        - action: rebuild
+          path: ../backend/services/catalog-service/prisma/schema.prisma
+        - action: sync
+          path: ../backend/services/catalog-service/src
+          target: /product/src
+    env_file:
+      - ../backend/services/catalog-service/.env
+    networks:
+      - ecommerce
+
+  order-cart-service:
+    build:
+      context: ../backend/services/order-service
+      dockerfile: Dockerfile
+    container_name: order-cart-service
+    command: pnpm watch
+    depends_on:
+      - order-cart-database
+    ports:
+      - "4001:4001"
+    develop:
+      watch:
+        - action: rebuild
+          path: ../backend/services/order-service/package.json
+        - action: rebuild
+          path: ../backend/services/order-service/prisma/schema.prisma
+        - action: sync
+          path: ../backend/services/order-service/src
+          target: /order-cart/src
+    env_file:
+      - ../backend/services/order-service/.env
     networks:
       - ecommerce

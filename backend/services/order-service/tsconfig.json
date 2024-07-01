@@ -1,0 +1,53 @@
+{
+    "extends": "@tsconfig/node20/tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "baseUrl": ".",
+        "rootDir": "src",
+        "lib": [
+            "ESNext"
+        ],
+        "paths": {
+            "@infrastructure/*": [
+                "src/infrastructure/*"
+            ],
+            "@models/*": [
+                "src/models/*"
+            ],
+            "@services/*": [
+                "src/services/*"
+            ],
+            "@interface/*": [
+                "src/interface/*"
+            ],
+            "@repository/*": [
+                "src/repository/*"
+            ],
+            "@utils/*": [
+                "src/utils/*"
+            ],
+            "@dto/*": [
+                "src/dto/*"
+            ],
+            "@api/*": [
+                "src/api/*"
+            ]
+        },
+        "types": [
+            "reflect-metadata",
+            "jest"
+        ],
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": [
+        "src",
+        "src/**/*.test.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

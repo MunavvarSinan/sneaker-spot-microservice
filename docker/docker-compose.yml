@@ -7,12 +7,36 @@ services:
       service: auth-db
     networks:
       - ecommerce
+  product-database:
+    extends:
+      file: docker-compose-db.yml
+      service: product-db
+    networks:
+      - ecommerce
+  order-cart-database:
+    extends:
+      file: docker-compose-db.yml
+      service: order-cart-db
+    networks:
+      - ecommerce
 
   #services
   auth:
     extends:
       file: docker-compose-services.yml
       service: auth-service
+    networks:
+      - ecommerce
+  product:
+    extends:
+      file: docker-compose-services.yml
+      service: product-service
+    networks:
+      - ecommerce
+  order-cart:
+    extends:
+      file: docker-compose-services.yml
+      service: order-cart-service
     networks:
       - ecommerce
   
